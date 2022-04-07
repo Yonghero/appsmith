@@ -125,6 +125,7 @@ function PropertyPaneView(
 
         <PropertyControlsGenerator
           id={widgetProperties.widgetId}
+          key={widgetProperties.widgetId}
           panel={panel}
           theme={EditorTheme.LIGHT}
           type={widgetProperties.type}

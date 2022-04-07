@@ -5,6 +5,7 @@ import moment from "moment-timezone";
 import { WidgetProps } from "widgets/BaseWidget";
 import parser from "fast-xml-parser";
 import { Severity } from "entities/AppsmithConsole";
+import Konva from "konva";
 import {
   getEntityNameAndPropertyPath,
   isJSAction,
@@ -152,6 +153,13 @@ export type ExtraLibrary = {
 };
 
 export const extraLibraries: ExtraLibrary[] = [
+  {
+    accessor: "Konva",
+    lib: Konva,
+    version: "1",
+    docsURL: `https://www.npmjs.com/package/konva`,
+    displayName: "jsDom",
+  },
   {
     accessor: "_",
     lib: _,

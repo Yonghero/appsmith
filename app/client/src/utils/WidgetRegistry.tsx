@@ -140,6 +140,10 @@ import VideoWidget, {
 } from "widgets/VideoWidget";
 import { registerWidget, WidgetConfiguration } from "./WidgetRegisterHelpers";
 
+import ImageCoverWidget, {
+  CONFIG as IMAGECOVWER_WIDGET_CONFIG,
+} from "widgets/ImageCoverWidget";
+
 export const ALL_WIDGETS_AND_CONFIG = [
   [CanvasWidget, CANVAS_WIDGET_CONFIG],
   [SkeletonWidget, SKELETON_WIDGET_CONFIG],
@@ -192,6 +196,7 @@ export const ALL_WIDGETS_AND_CONFIG = [
   [InputWidgetV2, INPUT_WIDGET_V2_CONFIG],
   [PhoneInputWidget, PHONE_INPUT_WIDGET_V2_CONFIG],
   [CurrencyInputWidget, CURRENCY_INPUT_WIDGET_V2_CONFIG],
+  [ImageCoverWidget, IMAGECOVWER_WIDGET_CONFIG],
   /*
    * If a newly added widget works well inside the list widget,
    * please add widget type in the List widget's allowed widget

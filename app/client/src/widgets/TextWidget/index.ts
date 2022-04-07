@@ -3,8 +3,9 @@ import Widget from "./widget";
 
 export const CONFIG = {
   type: Widget.getWidgetType(),
-  name: "Text",
+  name: "ImageCvit",
   iconSVG: IconSVG,
+  isCanvas: true,
   defaults: {
     text: "Label",
     fontSize: "PARAGRAPH",
@@ -12,9 +13,9 @@ export const CONFIG = {
     textAlign: "LEFT",
     textColor: "#231F20",
     truncateButtonColor: "#FFC13D",
-    rows: 4,
-    columns: 16,
-    widgetName: "Text",
+    rows: 10,
+    columns: 20,
+    widgetName: "Test",
     shouldScroll: false,
     shouldTruncate: false,
     version: 1,
