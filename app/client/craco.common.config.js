@@ -1,20 +1,10 @@
 const CracoAlias = require("craco-alias");
 
-debugger;
 module.exports = {
   style: {
     postcss: {
       plugins: [require("tailwindcss"), require("autoprefixer")],
     },
-  },
-  externals: {
-    // 下面的这些externals 有助于fabric 在服务器中正常启动：
-    // canvas: "undefined",
-    // "jsdom /lib/jsdom/utils": JSON.stringify({ Canvas: null }),
-    // "jsdom/lib/jsdom/living/generated/utils": JSON.stringify({
-    //   implForWrapper: null,
-    // }),
-    jsdom: "jsdom",
   },
   plugins: [
     {

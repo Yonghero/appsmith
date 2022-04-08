@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useLoadImageIntoView, startEventListen, useInitStage } from "../hooks";
+import {
+  useLoadImageIntoView,
+  // , startEventListen,
+  useInitStage,
+} from "../hooks";
 
 function ImageCoverComponent(props: ImageCoverComponentProps) {
   // 舞台唯一id
@@ -17,7 +21,7 @@ function ImageCoverComponent(props: ImageCoverComponentProps) {
 
   // 事件监听
   if (layer && stage) {
-    startEventListen({ layer, stage });
+    // startEventListen({ layer, stage });
   }
 
   useEffect(() => {
