@@ -1,8 +1,11 @@
+import { map } from "lodash";
 import {
   KeyDownTarget,
   MouseDownTarget,
+  RECTPOP,
   SETKEYDOWNTARGET,
   SETMOUSEDOWNTARGET,
+  ShapeForm,
 } from "./action/index";
 import Konva from "konva";
 import {
@@ -17,12 +20,13 @@ import {
 } from "./action";
 
 export type DrawType = "rect";
+
 export type Pointer = { x: any; y: any };
 export interface StoreState {
   canIMove: boolean;
   readyDraw: boolean;
   drawType: DrawType;
-  rectList: any[];
+  rectMap: Map<Konva.Rect, ShapeForm>;
   auxiliaryLines: Konva.Line[];
   mouseDownParma: Pointer;
   mouseMoveInitXY: Pointer;
@@ -35,7 +39,7 @@ export default class CvatStore {
     canIMove: false,
     readyDraw: false,
     drawType: "rect",
-    rectList: [],
+    rectMap: new Map(),
     auxiliaryLines: [],
     mouseDownTarget: "layer",
     keyDownTarget: undefined,
@@ -77,7 +81,10 @@ export default class CvatStore {
       case MOUSEDOWN:
         return { ...state, mouseDownParma: payLoad };
       case RECTPUSH:
-        state.rectList.push(payLoad);
+        state.rectMap.set(payLoad.shape, payLoad);
+        return state;
+      case RECTPOP:
+        state.rectMap.delete(payLoad);
         return state;
       case SETDRAWRTPE:
         return { ...state, drawType: payLoad };

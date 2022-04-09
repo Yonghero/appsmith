@@ -10,6 +10,7 @@ const SETMOUSEMOVEINITXY = "SETMOUSEMOVEINITXY";
 const SETAUXIlLARYLINES = "auxiliaryLines";
 export const SETMOUSEDOWNTARGET = "SETMOUSEDOWNTARGET";
 export const SETKEYDOWNTARGET = "SETKEYDOWNTARGET";
+export const RECTPOP = "RECTPOP";
 
 export interface ActionType {
   type: string;
@@ -54,6 +55,11 @@ const pushRect = (payLoad: ShapeForm) => ({
   payLoad,
 });
 
+const popRect = (payLoad: Konva.Rect) => ({
+  type: RECTPOP,
+  payLoad,
+});
+
 const setDrawType = (payLoad: any) => ({
   type: SETDRAWRTPE,
   payLoad,
@@ -77,6 +83,7 @@ export {
   SETDRAWRTPE,
   SETMOUSEMOVEINITXY,
   SETAUXIlLARYLINES,
+  popRect,
   setCanIMove,
   setReadyDraw,
   setMouseDownParam,

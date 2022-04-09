@@ -39,6 +39,8 @@ export function mouseWheel(
     y: pointer.y - mousePointTo.y * newScale,
   };
   stage.position(newPos);
+
+  stage.draw();
 }
 
 // 鼠标按下
@@ -51,7 +53,6 @@ export function mouseDown(
   e.cancelBubble = true;
   console.log("mouseDown");
   if (e.target.className !== "Rect" && this.state.keyDownTarget === undefined) {
-    console.log("this.state.keyDownTarget: ", this.state.keyDownTarget);
     // 按下启动绘制模式
     this.dispatch(setReadyDraw(true));
     // 记录鼠标按下的坐标点位

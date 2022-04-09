@@ -1,8 +1,8 @@
-import { setMouseDownTarget } from "./../store/action/index";
+import { popRect, setMouseDownTarget } from "./../store/action/index";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { ListenObj } from "../hooks";
-import { generateLineOptions } from "../shared";
+import { generateLineOptions, getLastValueInMap } from "../shared";
 import CvatStore, { DrawType } from "../store";
 import {
   pushRect,
@@ -10,7 +10,12 @@ import {
   setMouseMoveInitXY,
 } from "../store/action";
 
-function generateRect(cvatStore: CvatStore, { layer, stage }: ListenObj) {
+/**
+ * 生产一个矩形 并处理整个矩形的生命周期 (创建 -> 销毁)
+ * @param cvatStore
+ * @param ListenObj
+ */
+function provideRectLife(cvatStore: CvatStore, { layer, stage }: ListenObj) {
   const pointer = stage.getPointerPosition();
   // 生成矩形
   const rect = new Konva.Rect({
@@ -39,39 +44,13 @@ function generateRect(cvatStore: CvatStore, { layer, stage }: ListenObj) {
     },
   });
 
-  // rectTr.on("dragstart", () => {
-  //   console.log("dragstart: ");
+  // 监听双击事件 删除矩形
+  rect.on("dblclick", () => {
+    cvatStore.dispatch(popRect(rect));
+    rect.destroy();
+    rectTr.destroy();
+  });
 
-  //   cvatStore.dispatch(setMouseDownTarget("shape"));
-  // });
-  // rectTr.on("dragmove", () => {
-  // const boxes = rectTr.nodes().map((node) => node.getClientRect());
-  // const box = getTotalBox(boxes);
-  // rectTr.nodes().forEach((shape) => {
-  //   const absPos = shape.getAbsolutePosition();
-  //   // where are shapes inside bounding box of all shapes?
-  //   const offsetX = box.x - absPos.x;
-  //   const offsetY = box.y - absPos.y;
-  //   // we total box goes outside of viewport, we need to move absolute position of shape
-  //   const newAbsPos = { ...absPos };
-  //   if (box.x < 0) {
-  //     newAbsPos.x = -offsetX;
-  //   }
-  //   if (box.y < 0) {
-  //     newAbsPos.y = -offsetY;
-  //   }
-  //   if (box.x + box.width > stage.width()) {
-  //     newAbsPos.x = stage.width() - box.width - offsetX;
-  //   }
-  //   if (box.y + box.height > stage.height()) {
-  //     newAbsPos.y = stage.height() - box.height - offsetY;
-  //   }
-  //   shape.setAbsolutePosition(newAbsPos);
-  // });
-  // });
-  // rectTr.on("dragend", () => {
-  //   // cvatStore.dispatch(setMouseDownTarget("shape"));
-  // });
   layer.add(rectTr);
 
   cvatStore.dispatch(pushRect({ shape: rect, transform: rectTr }));
@@ -88,24 +67,27 @@ export function drawShapeIntoCanvas(
   if (!pointer || !cvatStore.state.readyDraw) return;
   // 鼠标按下绘制
   if (type === "rect" && status === "down") {
-    generateRect(cvatStore, { layer, stage });
+    provideRectLife(cvatStore, { layer, stage });
   }
 
-  // 鼠标移动绘制
-  if (status === "move" && cvatStore.state.rectList.length) {
+  // 鼠标移动绘制矩形框
+  if (status === "move" && cvatStore.state.rectMap.size) {
     const { x, y } = cvatStore.state.mouseDownParma;
 
-    // 矩形框
-    cvatStore.state.rectList[
-      cvatStore.state.rectList.length - 1
-    ].shape.setAttrs({
+    // 获取最新一个矩形框
+    getLastValueInMap(cvatStore.state.rectMap).shape.setAttrs({
       width: pointer.x - x,
       height: pointer.y - y,
     });
-    // console.log("currentRect: ", currentRect);
   }
 }
 
+/**
+ * 生成辅助线
+ * @param cvatStore
+ * @param param1
+ * @returns
+ */
 export function generateAuxiliaryLines(
   cvatStore: CvatStore,
   { layer, stage }: ListenObj,
