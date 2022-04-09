@@ -15,12 +15,13 @@ export function useInitStage(containerId: any) {
           container: containerId, // id of container <div>
           width: 700,
           height: 500,
+          draggable: true,
         }),
       );
       // then create layer
       setLayer(
         new Konva.Layer({
-          draggable: true,
+          draggable: false,
         }),
       );
     }

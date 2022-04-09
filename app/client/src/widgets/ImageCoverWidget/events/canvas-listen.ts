@@ -1,19 +1,15 @@
-import { useState } from "react";
 import { ListenObj } from "./../hooks/startEventListen";
 import { KonvaEventObject } from "konva/lib/Node";
-import Konva from "konva";
-import { generateLineOptions } from "../shared";
-
-// 辅助线
-const [auxiliaryLine, setAuxiliaryLine] = useState<Konva.Line[]>([]);
+import CvatStore from "../store";
+import { setMouseDownParam, setReadyDraw } from "../store/action";
+import { drawShapeIntoCanvas, generateAuxiliaryLines } from "./baseHandlers";
+import _ from "lodash";
 
 // 鼠标滚轮
 export function mouseWheel(
   { layer, stage }: ListenObj,
   e: KonvaEventObject<WheelEvent>,
 ): void {
-  console.log("layer, stage : ", layer, stage, e);
-
   const scaleBy = 1.01;
   e.evt.preventDefault();
 
@@ -47,43 +43,49 @@ export function mouseWheel(
 
 // 鼠标按下
 export function mouseDown(
+  this: CvatStore,
   { layer, stage }: ListenObj,
   e: KonvaEventObject<MouseEvent>,
 ) {
+  const pointer = stage.getPointerPosition();
+  e.target.preventDefault();
   console.log("mouseDown");
+  if (e.target.className !== "Rect") {
+    // 按下启动绘制模式
+    this.dispatch(setReadyDraw(true));
+    // 记录鼠标按下的坐标点位
+    this.dispatch(setMouseDownParam(pointer));
+
+    // layer.setAttr("draggable", false);
+    _.throttle(() => {
+      drawShapeIntoCanvas("rect", this, { layer, stage }, e, "down");
+    }, 100)();
+  }
 }
 
 // 鼠标抬起
 export function mouseUp(
+  this: CvatStore,
   { layer, stage }: ListenObj,
   e: KonvaEventObject<MouseEvent>,
 ) {
+  // 鼠标抬起 关闭绘制模式
+  this.dispatch(setReadyDraw(false));
+  // layer.draggable(false);
+  // layer.setAttr("draggable", true);
   console.log("mouseUp");
 }
 
 // 鼠标移动
 export function mouseMove(
+  this: CvatStore,
   { layer, stage }: ListenObj,
   e: KonvaEventObject<MouseEvent>,
 ) {
-  console.log("mousemove", e, layer.getAttr("width"), layer.getAttr("height"));
-  if (auxiliaryLine.length) {
-  } else {
-    // generator lines
-    const vline = new Konva.Line({
-      points: [5, 70, 140, 23, 250, 60, 300, 20],
-      ...generateLineOptions(),
-    });
-    const cline = new Konva.Line({
-      points: [15, 70, 140, 23],
-      ...generateLineOptions(),
-    });
+  console.log("move-----");
+  // 展示辅助线
+  generateAuxiliaryLines(this, { layer, stage });
 
-    layer.add(vline);
-    layer.add(cline);
-
-    layer.draw();
-
-    setAuxiliaryLine([vline, cline]);
-  }
+  // 图形绘制
+  drawShapeIntoCanvas("rect", this, { layer, stage }, e, "move");
 }

@@ -9,25 +9,12 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
   static getPropertyPaneConfig() {
     return [
       {
-        sectionName: "General",
-        children: [
-          {
-            propertyName: "color",
-            label: "Color",
-            helpText: "The ImageCover's color",
-            controlType: "INPUT_TEXT",
-            isTriggerProperty: false,
-            isBindProperty: true,
-          },
-        ],
-      },
-      {
         sectionName: "Styles",
         children: [
           {
-            propertyName: "color",
-            helpText: "Changes the color of the Text",
-            label: "Text Color",
+            propertyName: "rectColor",
+            helpText: "Changes the color of the Rect",
+            label: "Rect Color",
             controlType: "COLOR_PICKER",
             isBindProperty: true,
             isTriggerProperty: false,
@@ -60,7 +47,7 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
 }
 
 export interface ImageCoverWidgetProps extends WidgetProps {
-  color: string;
+  rectColor: string;
 }
 
 export default ImageCoverWidget;

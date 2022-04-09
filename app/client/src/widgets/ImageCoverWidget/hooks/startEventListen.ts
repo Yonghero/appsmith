@@ -1,12 +1,16 @@
 import Konva from "konva";
 import { mouseWheel, mouseDown, mouseUp, mouseMove } from "../events";
+import CvatStore from "../store";
 
 export interface ListenObj {
-  layer: Konva.Layer;
+  layer: any;
   stage: Konva.Stage;
 }
 
-export function startEventListen({ layer, stage }: ListenObj) {
+export function startEventListen(
+  cvatStore: CvatStore,
+  { layer, stage }: ListenObj,
+) {
   const canvasEventMap: Record<string, any> = {
     wheel: mouseWheel,
     mousedown: mouseDown,
@@ -16,9 +20,9 @@ export function startEventListen({ layer, stage }: ListenObj) {
 
   // canvas容器事件监听处理
   Object.keys(canvasEventMap).forEach((eventName) => {
-    layer.on(
+    stage.on(
       eventName,
-      canvasEventMap[eventName].bind(layer, { layer, stage }),
+      canvasEventMap[eventName].bind(cvatStore, { layer, stage }),
     );
   });
 
