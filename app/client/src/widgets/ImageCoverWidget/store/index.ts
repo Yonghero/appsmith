@@ -1,4 +1,9 @@
-import { MouseDownTarget, SETMOUSEDOWNTARGET } from "./action/index";
+import {
+  KeyDownTarget,
+  MouseDownTarget,
+  SETKEYDOWNTARGET,
+  SETMOUSEDOWNTARGET,
+} from "./action/index";
 import Konva from "konva";
 import {
   CANITMOVETYPE,
@@ -22,6 +27,7 @@ export interface StoreState {
   mouseDownParma: Pointer;
   mouseMoveInitXY: Pointer;
   mouseDownTarget: MouseDownTarget;
+  keyDownTarget: KeyDownTarget;
 }
 
 export default class CvatStore {
@@ -32,6 +38,7 @@ export default class CvatStore {
     rectList: [],
     auxiliaryLines: [],
     mouseDownTarget: "layer",
+    keyDownTarget: undefined,
     mouseMoveInitXY: {
       x: undefined,
       y: undefined,
@@ -80,6 +87,9 @@ export default class CvatStore {
         return { ...state, auxiliaryLines: payLoad };
       case SETMOUSEDOWNTARGET: {
         return { ...state, mouseDownTarget: payLoad };
+      }
+      case SETKEYDOWNTARGET: {
+        return { ...state, keyDownTarget: payLoad };
       }
       default:
         return state;

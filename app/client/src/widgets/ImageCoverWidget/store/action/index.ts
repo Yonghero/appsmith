@@ -9,6 +9,7 @@ const SETDRAWRTPE = "set draw type";
 const SETMOUSEMOVEINITXY = "SETMOUSEMOVEINITXY";
 const SETAUXIlLARYLINES = "auxiliaryLines";
 export const SETMOUSEDOWNTARGET = "SETMOUSEDOWNTARGET";
+export const SETKEYDOWNTARGET = "SETKEYDOWNTARGET";
 
 export interface ActionType {
   type: string;
@@ -21,9 +22,15 @@ export interface ShapeForm {
 }
 
 export type MouseDownTarget = "layer" | "shape";
+export type KeyDownTarget = "shift" | undefined;
 
 export const setMouseDownTarget = (payLoad: MouseDownTarget) => ({
   type: SETMOUSEDOWNTARGET,
+  payLoad,
+});
+
+export const setKeyDownTarget = (payLoad: KeyDownTarget) => ({
+  type: SETKEYDOWNTARGET,
   payLoad,
 });
 

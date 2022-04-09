@@ -1,11 +1,11 @@
+import { setKeyDownTarget } from "./../store/action/index";
 import { ListenObj } from "./../hooks/startEventListen";
 import { KonvaEventObject } from "konva/lib/Node";
 import CvatStore from "../store";
 import { setMouseDownParam, setReadyDraw } from "../store/action";
 import { drawShapeIntoCanvas, generateAuxiliaryLines } from "./baseHandlers";
-import _ from "lodash";
 
-// 鼠标滚轮
+// 鼠标滚轮缩放
 export function mouseWheel(
   { layer, stage }: ListenObj,
   e: KonvaEventObject<WheelEvent>,
@@ -48,18 +48,16 @@ export function mouseDown(
   e: KonvaEventObject<MouseEvent>,
 ) {
   const pointer = stage.getPointerPosition();
-  e.target.preventDefault();
+  e.cancelBubble = true;
   console.log("mouseDown");
-  if (e.target.className !== "Rect") {
+  if (e.target.className !== "Rect" && this.state.keyDownTarget === undefined) {
+    console.log("this.state.keyDownTarget: ", this.state.keyDownTarget);
     // 按下启动绘制模式
     this.dispatch(setReadyDraw(true));
     // 记录鼠标按下的坐标点位
     this.dispatch(setMouseDownParam(pointer));
 
-    // layer.setAttr("draggable", false);
-    _.throttle(() => {
-      drawShapeIntoCanvas("rect", this, { layer, stage }, e, "down");
-    }, 100)();
+    drawShapeIntoCanvas("rect", this, { layer, stage }, e, "down");
   }
 }
 
@@ -71,8 +69,6 @@ export function mouseUp(
 ) {
   // 鼠标抬起 关闭绘制模式
   this.dispatch(setReadyDraw(false));
-  // layer.draggable(false);
-  // layer.setAttr("draggable", true);
   console.log("mouseUp");
 }
 
@@ -82,10 +78,50 @@ export function mouseMove(
   { layer, stage }: ListenObj,
   e: KonvaEventObject<MouseEvent>,
 ) {
-  console.log("move-----");
   // 展示辅助线
   generateAuxiliaryLines(this, { layer, stage });
 
   // 图形绘制
   drawShapeIntoCanvas("rect", this, { layer, stage }, e, "move");
+}
+
+// 键盘按下
+export function keyDown(
+  this: CvatStore,
+  { layer, stage }: ListenObj,
+  container: HTMLElement,
+) {
+  container!.tabIndex = 1;
+  container!.focus();
+  container!.addEventListener("keydown", (e) => {
+    if (e.key === "Shift") {
+      onKeyDownShift(this, { layer, stage });
+    }
+  });
+}
+
+// 键盘抬起
+export function keyUp(
+  this: CvatStore,
+  { layer, stage }: ListenObj,
+  container: HTMLElement,
+) {
+  container.addEventListener("keyup", (e) => {
+    if (e.key === "Shift") {
+      onKeyUpShift(this, { layer, stage });
+    }
+  });
+  console.log("keyup");
+}
+
+function onKeyDownShift(cvatStore: CvatStore, { layer, stage }: ListenObj) {
+  cvatStore.dispatch(setKeyDownTarget("shift"));
+  // 启动画布可移动模式
+  layer.draggable(true);
+}
+
+function onKeyUpShift(cvatStore: CvatStore, { layer, stage }: ListenObj) {
+  cvatStore.dispatch(setKeyDownTarget(undefined));
+  // 关闭画布可移动模式
+  layer.draggable(false);
 }
