@@ -1,10 +1,10 @@
-import { map } from "lodash";
 import {
   KeyDownTarget,
   MouseDownTarget,
   RECTPOP,
   SETKEYDOWNTARGET,
   SETMOUSEDOWNTARGET,
+  SETRECTOPTIONS,
   ShapeForm,
 } from "./action/index";
 import Konva from "konva";
@@ -18,6 +18,7 @@ import {
   SETMOUSEMOVEINITXY,
   SETAUXIlLARYLINES,
 } from "./action";
+import { TransformerConfig } from "konva/lib/shapes/Transformer";
 
 export type DrawType = "rect";
 
@@ -27,6 +28,7 @@ export interface StoreState {
   readyDraw: boolean;
   drawType: DrawType;
   rectMap: Map<Konva.Rect, ShapeForm>;
+  rectOptions: TransformerConfig;
   auxiliaryLines: Konva.Line[];
   mouseDownParma: Pointer;
   mouseMoveInitXY: Pointer;
@@ -40,6 +42,9 @@ export default class CvatStore {
     readyDraw: false,
     drawType: "rect",
     rectMap: new Map(),
+    rectOptions: {
+      anchorSize: 7,
+    },
     auxiliaryLines: [],
     mouseDownTarget: "layer",
     keyDownTarget: undefined,
@@ -56,50 +61,56 @@ export default class CvatStore {
   state: StoreState;
 
   constructor() {
-    //   const [state, dispatchCvat] = useReducer(
-    //     this.cvatReducer,
-    //     this.initialstate,
-    //   );
-    //   this.state = state;
-    //   this.dispatch = dispatchCvat;
     this.state = this.initialstate;
   }
 
   public dispatch(action: ActionType) {
     if (typeof action === "object") {
-      this.state = this.cvatReducer(this.state, action);
+      this.state = this.cvatReducer(action);
+      console.log("this.state: ", this.state.rectMap);
     }
   }
 
-  cvatReducer(state: StoreState, action: ActionType): StoreState {
+  get storeState() {
+    console.log("this.state: ", this.state);
+    return this.state;
+  }
+
+  cvatReducer(action: ActionType): StoreState {
     const { payLoad, type } = action;
     switch (type) {
       case CANITMOVETYPE:
-        return { ...state, canIMove: payLoad };
+        return { ...this.state, canIMove: payLoad };
       case READYDRWA:
-        return { ...state, readyDraw: payLoad };
+        return { ...this.state, readyDraw: payLoad };
       case MOUSEDOWN:
-        return { ...state, mouseDownParma: payLoad };
+        return { ...this.state, mouseDownParma: payLoad };
       case RECTPUSH:
-        state.rectMap.set(payLoad.shape, payLoad);
-        return state;
+        this.state.rectMap.set(payLoad.shape, payLoad);
+        return this.state;
       case RECTPOP:
-        state.rectMap.delete(payLoad);
-        return state;
+        this.state.rectMap.delete(payLoad);
+        return this.state;
       case SETDRAWRTPE:
-        return { ...state, drawType: payLoad };
+        return { ...this.state, drawType: payLoad };
       case SETMOUSEMOVEINITXY:
-        return { ...state, mouseMoveInitXY: payLoad };
+        return { ...this.state, mouseMoveInitXY: payLoad };
       case SETAUXIlLARYLINES:
-        return { ...state, auxiliaryLines: payLoad };
+        return { ...this.state, auxiliaryLines: payLoad };
       case SETMOUSEDOWNTARGET: {
-        return { ...state, mouseDownTarget: payLoad };
+        return { ...this.state, mouseDownTarget: payLoad };
       }
       case SETKEYDOWNTARGET: {
-        return { ...state, keyDownTarget: payLoad };
+        return { ...this.state, keyDownTarget: payLoad };
+      }
+      case SETRECTOPTIONS: {
+        return {
+          ...this.state,
+          rectOptions: { ...this.state.rectOptions, ...payLoad },
+        };
       }
       default:
-        return state;
+        return this.state;
     }
   }
 }

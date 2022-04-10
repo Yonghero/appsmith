@@ -1,5 +1,5 @@
-import { setKeyDownTarget } from "./../store/action/index";
-import { ListenObj } from "./../hooks/startEventListen";
+import { setKeyDownTarget } from "../store/action/index";
+import { ListenObj } from "../hooks/startEventListen";
 import { KonvaEventObject } from "konva/lib/Node";
 import CvatStore from "../store";
 import { setMouseDownParam, setReadyDraw } from "../store/action";

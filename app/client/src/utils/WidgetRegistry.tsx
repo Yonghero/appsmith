@@ -142,7 +142,7 @@ import { registerWidget, WidgetConfiguration } from "./WidgetRegisterHelpers";
 
 import ImageCoverWidget, {
   CONFIG as IMAGECOVWER_WIDGET_CONFIG,
-} from "widgets/ImageCoverWidget";
+} from "widgets/ImageTaggingWidget";
 
 export const ALL_WIDGETS_AND_CONFIG = [
   [CanvasWidget, CANVAS_WIDGET_CONFIG],

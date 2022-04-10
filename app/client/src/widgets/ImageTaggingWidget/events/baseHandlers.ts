@@ -1,4 +1,4 @@
-import { popRect, setMouseDownTarget } from "./../store/action/index";
+import { popRect, setMouseDownTarget } from "../store/action/index";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { ListenObj } from "../hooks";
@@ -42,6 +42,7 @@ function provideRectLife(cvatStore: CvatStore, { layer, stage }: ListenObj) {
       }
       return newBox;
     },
+    ...cvatStore.state.rectOptions,
   });
 
   // 监听双击事件 删除矩形
@@ -52,7 +53,6 @@ function provideRectLife(cvatStore: CvatStore, { layer, stage }: ListenObj) {
   });
 
   layer.add(rectTr);
-
   cvatStore.dispatch(pushRect({ shape: rect, transform: rectTr }));
 }
 

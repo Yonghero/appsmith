@@ -1,4 +1,5 @@
 import Konva from "konva";
+import { TransformerConfig } from "konva/lib/shapes/Transformer";
 import { Pointer } from "..";
 
 const CANITMOVETYPE = "move";
@@ -11,6 +12,7 @@ const SETAUXIlLARYLINES = "auxiliaryLines";
 export const SETMOUSEDOWNTARGET = "SETMOUSEDOWNTARGET";
 export const SETKEYDOWNTARGET = "SETKEYDOWNTARGET";
 export const RECTPOP = "RECTPOP";
+export const SETRECTOPTIONS = "SETRECTOPTIONS";
 
 export interface ActionType {
   type: string;
@@ -24,6 +26,11 @@ export interface ShapeForm {
 
 export type MouseDownTarget = "layer" | "shape";
 export type KeyDownTarget = "shift" | undefined;
+
+export const setRectOptions = (payLoad: TransformerConfig) => ({
+  type: SETRECTOPTIONS,
+  payLoad,
+});
 
 export const setMouseDownTarget = (payLoad: MouseDownTarget) => ({
   type: SETMOUSEDOWNTARGET,

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Layer } from "konva/lib/Layer";
 import Konva from "konva";
 import {
@@ -11,7 +12,7 @@ import {
 import CvatStore from "../store";
 
 export interface ListenObj {
-  layer: any;
+  layer: Konva.Layer;
   stage: Konva.Stage;
 }
 
