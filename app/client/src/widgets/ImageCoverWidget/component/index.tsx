@@ -34,29 +34,30 @@ function ImageTaggingComponent(props: ImageCoverComponentProps) {
     height: 500,
   });
 
+  const dispatchBboxs = () => {
+    const bboxs: any = [];
+    cvatStore.state.rectMap.forEach((rect: ShapeForm) => {
+      const { x, y } = rect.shape.position();
+      bboxs.push([
+        rect.transform.borderStroke(),
+        x,
+        y,
+        rect.shape.width(),
+        rect.shape.height(),
+      ]);
+    });
+    props.onUpdateMeta("bboxs", bboxs);
+  };
+
   // 鼠标、键盘事件监听
-  useEventListening(cvatStore, layer, stage, containerId);
+  useEventListening(cvatStore, layer, stage, containerId, dispatchBboxs);
 
   // props 监听
   useListenToModInsider(cvatStore, layer, stage, props);
 
-  const onClick = () => {
-    // props.onUpdateMeta("bboxs", [Math.random()]);
-
-    cvatStore.state.rectMap.forEach((rect: ShapeForm) => {
-      console.log(
-        "rect.position(): ",
-        rect.shape.position(),
-        rect.shape.width(),
-        rect.shape.height(),
-      );
-    });
-  };
-
   return (
     <Wrapper>
       <div id={containerId} />
-      <button onClick={onClick}>click me</button>
     </Wrapper>
   );
 }
@@ -64,7 +65,7 @@ function ImageTaggingComponent(props: ImageCoverComponentProps) {
 export interface ImageCoverComponentProps extends ComponentProps {
   rectColor: string;
   imageUrl: string;
-  defaultBboxs: any;
+  defaultBboxs: string;
   onUpdateMeta: (key: string, value: any) => void;
 }
 

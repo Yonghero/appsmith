@@ -20,6 +20,7 @@ export function startEventListen(
   cvatStore: CvatStore,
   { layer, stage }: ListenObj,
   containerId: string,
+  dispatchBboxs: () => void,
 ) {
   const canvasEventMap: Record<string, any> = {
     wheel: mouseWheel,
@@ -32,7 +33,11 @@ export function startEventListen(
   Object.keys(canvasEventMap).forEach((eventName) => {
     layer.on(
       eventName,
-      canvasEventMap[eventName].bind(cvatStore, { layer, stage }),
+      canvasEventMap[eventName].bind(cvatStore, {
+        layer,
+        stage,
+        dispatchBboxs,
+      }),
     );
   });
 

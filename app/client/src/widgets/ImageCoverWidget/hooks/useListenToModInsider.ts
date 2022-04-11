@@ -25,7 +25,6 @@ export function useListenToModInsider(
 
   // 矩形数据监听
   useEffect(() => {
-    console.log("props.defaultBboxs: ", props.defaultBboxs);
     if (props.defaultBboxs && layer && stage) {
       try {
         let boxs = props.defaultBboxs;

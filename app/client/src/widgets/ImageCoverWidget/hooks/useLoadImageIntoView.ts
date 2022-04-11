@@ -29,6 +29,7 @@ export function useLoadImageIntoView(
 
   useEffect(() => {
     if (!container) return;
+
     imageObj.onload = () => {
       setYoda(() => {
         const _yoda: Konva.Image = new Konva.Image({

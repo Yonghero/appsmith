@@ -65,12 +65,12 @@ export function mouseDown(
 // 鼠标抬起
 export function mouseUp(
   this: CvatStore,
-  { layer, stage }: ListenObj,
+  { dispatchBboxs, layer, stage }: any,
   e: KonvaEventObject<MouseEvent>,
 ) {
   // 鼠标抬起 关闭绘制模式
   this.dispatch(setReadyDraw(false));
-  console.log("mouseUp");
+  dispatchBboxs();
 }
 
 // 鼠标移动

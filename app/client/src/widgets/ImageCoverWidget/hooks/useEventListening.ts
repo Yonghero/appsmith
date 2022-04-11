@@ -8,11 +8,12 @@ export function useEventListening(
   layer: Konva.Layer | undefined,
   stage: Konva.Stage | undefined,
   containerId: string,
+  dispatchBboxs: () => void,
 ) {
   // 事件监听
   useEffect(() => {
     if (layer && stage) {
-      startEventListen(cvatStore, { layer, stage }, containerId);
+      startEventListen(cvatStore, { layer, stage }, containerId, dispatchBboxs);
     }
   }, [layer && stage]);
 }

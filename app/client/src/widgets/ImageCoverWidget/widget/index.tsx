@@ -27,15 +27,6 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
             isJSConvertible: true,
             validation: { type: ValidationTypes.IMAGE_URL },
           },
-          {
-            helpText: "default bboxs",
-            propertyName: "defaultBboxs",
-            label: "default_bboxs",
-            controlType: "INPUT_TEXT",
-            isJSConvertible: true,
-            isBindProperty: true,
-            isTriggerProperty: false,
-          },
         ],
       },
       {
@@ -45,7 +36,17 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
             propertyName: "rectColor",
             helpText: "Changes the color of the Rect",
             label: "Rect Color",
-            controlType: "COLOR_PICKER",
+            controlType: "INPUT_TEXT",
+            // controlType: "COLOR_PICKER",
+            isBindProperty: true,
+            isTriggerProperty: false,
+          },
+          {
+            propertyName: "defaultBboxs",
+            helpText: "Changes the color of the Rect",
+            label: "default_bboxs",
+            controlType: "INPUT_TEXT",
+            // controlType: "COLOR_PICKER",
             isBindProperty: true,
             isTriggerProperty: false,
           },
@@ -64,13 +65,12 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
 
   static getMetaPropertiesMap(): Record<string, any> {
     return {
-      bboxs: [{ a: 2 }],
+      bboxs: [],
     };
   }
 
   onUpdateMeta = (key: string, value: any) => {
-    debugger;
-    this.props.updateWidgetMetaProperty("key", value);
+    this.props.updateWidgetMetaProperty(key, value);
   };
 
   getPageView() {
