@@ -7,6 +7,10 @@ import ImageTaggingComponent from "../component";
 import { ValidationTypes } from "constants/WidgetValidation";
 
 class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
+  constructor(props: ImageCoverWidgetProps) {
+    super(props);
+  }
+
   static getPropertyPaneConfig() {
     return [
       {
@@ -20,7 +24,17 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
             placeholderText: "URL / Base64",
             isBindProperty: true,
             isTriggerProperty: false,
+            isJSConvertible: true,
             validation: { type: ValidationTypes.IMAGE_URL },
+          },
+          {
+            helpText: "default bboxs",
+            propertyName: "defaultBboxs",
+            label: "default_bboxs",
+            controlType: "INPUT_TEXT",
+            isJSConvertible: true,
+            isBindProperty: true,
+            isTriggerProperty: false,
           },
         ],
       },
@@ -49,15 +63,24 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
   }
 
   static getMetaPropertiesMap(): Record<string, any> {
-    return {};
+    return {
+      bboxs: [{ a: 2 }],
+    };
   }
 
+  onUpdateMeta = (key: string, value: any) => {
+    debugger;
+    this.props.updateWidgetMetaProperty("key", value);
+  };
+
   getPageView() {
-    const { color, image, widgetId } = this.props;
+    const { defaultBboxs, image, rectColor, widgetId } = this.props;
     return (
       <ImageTaggingComponent
+        defaultBboxs={defaultBboxs}
         imageUrl={image}
-        rectColor={color}
+        onUpdateMeta={this.onUpdateMeta}
+        rectColor={rectColor}
         widgetId={widgetId}
       />
     );
@@ -69,8 +92,9 @@ class ImageCoverWidget extends BaseWidget<ImageCoverWidgetProps, WidgetState> {
 }
 
 export interface ImageCoverWidgetProps extends WidgetProps {
-  color: string;
+  rectColor: string;
   image: string;
+  defaultBboxs: any;
 }
 
 export default ImageCoverWidget;

@@ -9,20 +9,27 @@ import {
   setAuxiliaryLines,
   setMouseMoveInitXY,
 } from "../store/action";
+import { RectConfig } from "konva/lib/shapes/Rect";
+import { TransformerConfig } from "konva/lib/shapes/Transformer";
 
 /**
  * 生产一个矩形 并处理整个矩形的生命周期 (创建 -> 销毁)
  * @param cvatStore
  * @param ListenObj
+ * @param rectOptions
  */
-function provideRectLife(cvatStore: CvatStore, { layer, stage }: ListenObj) {
+export function provideRectLife(
+  cvatStore: CvatStore,
+  { layer, stage }: ListenObj,
+  rectOptions?: Partial<TransformerConfig | RectConfig>,
+) {
   const pointer = stage.getPointerPosition();
   // 生成矩形
   const rect = new Konva.Rect({
-    x: pointer?.x,
-    y: pointer?.y,
-    width: 0,
-    height: 0,
+    x: rectOptions?.x ? +rectOptions.x : pointer?.x,
+    y: rectOptions?.y ? +rectOptions.y : pointer?.y,
+    width: rectOptions?.width ? +rectOptions.width : 0,
+    height: rectOptions?.height ? +rectOptions.height : 0,
     draggable: true,
   });
   layer.add(rect);
@@ -44,6 +51,11 @@ function provideRectLife(cvatStore: CvatStore, { layer, stage }: ListenObj) {
     },
     ...cvatStore.state.rectOptions,
   });
+
+  // 矩形边框颜色
+  if (rectOptions && rectOptions.borderStroke) {
+    rectTr.setAttr("borderStroke", rectOptions.borderStroke);
+  }
 
   // 监听双击事件 删除矩形
   rect.on("dblclick", () => {

@@ -43,7 +43,6 @@ const generateWidget = memoize(function getWidgetComponent(
 
 export const registerWidget = (Widget: any, config: WidgetConfiguration) => {
   const ProfiledWidget = generateWidget(Widget, !!config.needsMeta);
-
   WidgetFactory.registerWidgetBuilder(
     config.type,
     {

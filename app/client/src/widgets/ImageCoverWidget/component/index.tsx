@@ -1,4 +1,3 @@
-import Konva from "konva";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ComponentProps } from "widgets/BaseComponent";
@@ -39,11 +38,18 @@ function ImageTaggingComponent(props: ImageCoverComponentProps) {
   useEventListening(cvatStore, layer, stage, containerId);
 
   // props 监听
-  useListenToModInsider(cvatStore, props);
+  useListenToModInsider(cvatStore, layer, stage, props);
 
   const onClick = () => {
+    // props.onUpdateMeta("bboxs", [Math.random()]);
+
     cvatStore.state.rectMap.forEach((rect: ShapeForm) => {
-      console.log("rect.position(): ", rect.shape.position());
+      console.log(
+        "rect.position(): ",
+        rect.shape.position(),
+        rect.shape.width(),
+        rect.shape.height(),
+      );
     });
   };
 
@@ -58,6 +64,8 @@ function ImageTaggingComponent(props: ImageCoverComponentProps) {
 export interface ImageCoverComponentProps extends ComponentProps {
   rectColor: string;
   imageUrl: string;
+  defaultBboxs: any;
+  onUpdateMeta: (key: string, value: any) => void;
 }
 
 export default ImageTaggingComponent;
