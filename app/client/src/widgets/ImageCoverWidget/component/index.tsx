@@ -34,6 +34,7 @@ function ImageTaggingComponent(props: ImageCoverComponentProps) {
     height: 500,
   });
 
+  // 传递当前画布上最新的矩形数据
   const dispatchBboxs = () => {
     const bboxs: any = [];
     cvatStore.state.rectMap.forEach((rect: ShapeForm) => {

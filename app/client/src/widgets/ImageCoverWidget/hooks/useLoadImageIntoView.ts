@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Konva from "konva";
-import TestJpg from "assets/test.jpg";
+import Placeholder from "../store/placeholder.jpg";
 import { ImageConfig } from "konva/lib/shapes/Image";
 import { ImageCoverComponentProps } from "../component";
 
@@ -55,11 +55,11 @@ export function useLoadImageIntoView(
     } else if (!yoda && !props.imageUrl) {
       // 第一次加载默认图片
       setIsRePaint(true);
-      imageObj.src = TestJpg;
+      imageObj.src = Placeholder;
     } else if (yoda && !props.imageUrl && !isRePaint) {
       // 替换图片
       clearContainer();
-      imageObj.src = TestJpg;
+      imageObj.src = Placeholder;
 
       setIsRePaint(true);
     }

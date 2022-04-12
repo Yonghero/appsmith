@@ -36,6 +36,7 @@ export function provideRectLife(
   // 增加矩形操作功能
   const rectTr = new Konva.Transformer({
     nodes: [rect],
+    rotateEnabled: false,
     boundBoxFunc: (oldBox, newBox) => {
       const box = getClientRect(newBox);
       const isOut =

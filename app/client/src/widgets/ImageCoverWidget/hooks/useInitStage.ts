@@ -1,4 +1,3 @@
-import { truncateString } from "../../../utils/helpers";
 import { useEffect, useState } from "react";
 import Konva from "konva";
 
