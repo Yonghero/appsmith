@@ -1,4 +1,4 @@
-import { popRect, setMouseDownTarget } from "../store/action/index";
+import { popRect } from "../store/action/index";
 import Konva from "konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { ListenObj } from "../hooks";
@@ -174,26 +174,6 @@ export function getClientRect(rotatedBox: any) {
   const maxX = Math.max(p1.x, p2.x, p3.x, p4.x);
   const maxY = Math.max(p1.y, p2.y, p3.y, p4.y);
 
-  return {
-    x: minX,
-    y: minY,
-    width: maxX - minX,
-    height: maxY - minY,
-  };
-}
-
-function getTotalBox(boxes: any) {
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-
-  boxes.forEach((box: any) => {
-    minX = Math.min(minX, box.x);
-    minY = Math.min(minY, box.y);
-    maxX = Math.max(maxX, box.x + box.width);
-    maxY = Math.max(maxY, box.y + box.height);
-  });
   return {
     x: minX,
     y: minY,

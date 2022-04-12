@@ -14,7 +14,6 @@ export function useLoadImageIntoView(
   container: Konva.Layer | undefined,
   options: Partial<ImageConfig>,
 ): any {
-  // main API:
   const [yoda, setYoda] = useState<Konva.Image>();
 
   const imageObj = document.createElement("img");

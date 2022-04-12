@@ -30,8 +30,8 @@ function ImageTaggingComponent(props: ImageCoverComponentProps) {
 
   // 加载图片进入舞台
   useLoadImageIntoView(props, layer, {
-    width: 700,
-    height: 500,
+    width: 1000,
+    height: 700,
   });
 
   // 传递当前画布上最新的矩形数据

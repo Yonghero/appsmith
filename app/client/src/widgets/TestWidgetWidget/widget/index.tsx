@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 import BaseWidget, { WidgetProps, WidgetState } from "widgets/BaseWidget";
 import { DerivedPropertiesMap } from "utils/WidgetFactory";

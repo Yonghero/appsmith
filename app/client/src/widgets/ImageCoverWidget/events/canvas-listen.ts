@@ -7,7 +7,7 @@ import { drawShapeIntoCanvas, generateAuxiliaryLines } from "./baseHandlers";
 
 // 鼠标滚轮缩放
 export function mouseWheel(
-  { layer, stage }: ListenObj,
+  { stage }: ListenObj,
   e: KonvaEventObject<WheelEvent>,
 ): void {
   const scaleBy = 1.01;
@@ -51,7 +51,6 @@ export function mouseDown(
 ) {
   const pointer = stage.getPointerPosition();
   e.cancelBubble = true;
-  console.log("mouseDown");
   if (e.target.className !== "Rect" && this.state.keyDownTarget === undefined) {
     // 按下启动绘制模式
     this.dispatch(setReadyDraw(true));
@@ -63,11 +62,7 @@ export function mouseDown(
 }
 
 // 鼠标抬起
-export function mouseUp(
-  this: CvatStore,
-  { dispatchBboxs, layer, stage }: any,
-  e: KonvaEventObject<MouseEvent>,
-) {
+export function mouseUp(this: CvatStore, { dispatchBboxs }: any) {
   // 鼠标抬起 关闭绘制模式
   this.dispatch(setReadyDraw(false));
   dispatchBboxs();
@@ -92,13 +87,15 @@ export function keyDown(
   { layer, stage }: ListenObj,
   container: HTMLElement,
 ) {
-  container!.tabIndex = 1;
-  container!.focus();
-  container!.addEventListener("keydown", (e) => {
-    if (e.key === "Shift") {
-      onKeyDownShift(this, { layer, stage });
-    }
-  });
+  if (container) {
+    container.tabIndex = 1;
+    container.focus();
+    container.addEventListener("keydown", (e) => {
+      if (e.key === "Shift") {
+        onKeyDownShift(this, { layer, stage });
+      }
+    });
+  }
 }
 
 // 键盘抬起
@@ -112,16 +109,15 @@ export function keyUp(
       onKeyUpShift(this, { layer, stage });
     }
   });
-  console.log("keyup");
 }
 
-function onKeyDownShift(cvatStore: CvatStore, { layer, stage }: ListenObj) {
+function onKeyDownShift(cvatStore: CvatStore, { layer }: ListenObj) {
   cvatStore.dispatch(setKeyDownTarget("shift"));
   // 启动画布可移动模式
   layer.draggable(true);
 }
 
-function onKeyUpShift(cvatStore: CvatStore, { layer, stage }: ListenObj) {
+function onKeyUpShift(cvatStore: CvatStore, { layer }: ListenObj) {
   cvatStore.dispatch(setKeyDownTarget(undefined));
   // 关闭画布可移动模式
   layer.draggable(false);

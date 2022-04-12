@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Layer } from "konva/lib/Layer";
 import Konva from "konva";
 import {
   mouseWheel,
@@ -42,7 +40,7 @@ export function startEventListen(
   });
 
   // 键盘监听事件
-  const keyboardEvent = {
+  const keyboardEvent: any = {
     keyDown,
     keyUp,
   };

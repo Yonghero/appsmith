@@ -67,12 +67,10 @@ export default class CvatStore {
   public dispatch(action: ActionType) {
     if (typeof action === "object") {
       this.state = this.cvatReducer(action);
-      console.log("this.state: ", this.state.rectMap);
     }
   }
 
   get storeState() {
-    console.log("this.state: ", this.state);
     return this.state;
   }
 

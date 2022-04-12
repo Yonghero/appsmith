@@ -13,8 +13,8 @@ export function useInitStage(containerId: any) {
       setStage(
         new Konva.Stage({
           container: containerId, // id of container <div>
-          width: 700,
-          height: 500,
+          width: 1000,
+          height: 700,
           draggable: true,
         }),
       );
